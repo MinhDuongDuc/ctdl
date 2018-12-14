@@ -1,0 +1,93 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+template <typename T> // T la kieu cua cac phan tu trong dong
+class BinaryHeap
+{
+	public:
+		// capacity la dung luong cua dong (so phan tu toi da ma dong co
+		// the chua duoc)
+		BinaryHeap(int capacity = 100)
+		{
+			array.resize(capacity  + 1);
+			currentSize = 0;
+		}
+		
+		// Kiem tra trang thai rong cua dong
+		bool isEmpty()
+		{
+			return (currentSize == 0);
+		}
+		
+		// Tra ve phan tu nho nhat tren dong
+		const T & findMin()
+		{
+			return array[1];
+		}
+		
+		// Chen phan tu x vao dong
+		void insert(const T & x)
+		{
+			currentSize++;
+			int hole = currentSize;
+			while (hole > 1 && x < array[hole / 2])
+			{
+ 				array[hole] = array[hole / 2];
+ 				hole = hole / 2;
+			}
+			array[hole] = x;
+		}
+		
+		// Xoa phan tu nho nhat khoi dong
+		void deleteMin()
+		{
+			array[1] = array[currentSize];
+			currentSize--;
+			
+			percolateDown(1);
+		}
+	private:
+		int currentSize; // so phan tu hien co trong dong
+		
+		vector<T> array; // vector chua cac phan tu trong dong
+		
+		// Tham thau xuoi
+		void percolateDown(int hole)
+		{
+			T x = array[hole];
+			int child;
+			while (hole * 2 <= currentSize)
+			{
+				child = hole * 2;
+				if (child < currentSize && array[child + 1] < array[child]) child++;
+				if (x > array[child])
+				{
+					array[hole] = array[child];
+					hole = child;
+				}
+				else
+					break;
+ 			}
+ 			array[hole] = x;
+		}
+};
+int main()
+{
+	BinaryHeap<int> bh;
+	bh.insert(8);
+	bh.insert(3);
+	bh.insert(9);
+	bh.insert(1);
+	bh.insert(7);
+	bh.insert(5);
+	bh.insert(6);
+	bh.insert(4);
+	while(!bh.isEmpty())
+	{
+		cout << bh.findMin() << " ";
+		bh.deleteMin();
+	}
+	
+	return 0;
+}
