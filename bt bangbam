@@ -1,0 +1,86 @@
+#include<iostream>
+#include<string>
+using namespace std;
+  
+struct MucTu
+{
+  string tuTiengAnh;
+  string nghiaTiengViet;
+  MucTu(string tuTA = "", string nghiaTV = "")
+  {
+     tuTiengAnh=tuTA;
+     nghiaTiengViet=nghiaTV;
+  }
+};
+
+class TuDien
+{
+ public:
+ TuDien(int size = 101)
+ {
+ 	table = new MucTu[size];
+ 	trong = new bool[size];
+ 	tableSize = size;
+ 	for ( int i=0 ; i<size; i++)
+ 	  trong[i]=true;
+ }
+ ~TuDien()
+ {
+ 	delete[]table;
+ 	delete[]trong;
+ }
+  void chenMucTu(MucTu mt)
+  {
+  	int index=hash(mt.tuTiengAnh);
+  	while (!trong[index])
+  	{
+  		index++;
+  		index=index%tableSize;
+	  } 
+	  table[index]=mt;
+	  trong[index]=false;
+  }
+ string nghiaTiengViet(string tuTiengAnh)
+ {
+ 	int index=hash(tuTiengAnh);
+ 	while (!trong[index])
+ 	{
+ 		if( table[index].tuTiengAnh==tuTiengAnh)
+ 		  return table[index].nghiaTiengViet;
+ 		index++;
+ 		index=index%tableSize;
+	 } 
+	  return "";
+ }
+ private:
+ MucTu * table; 
+ int tableSize; 
+ bool * trong;
+ int hash(string tuTiengAnh)
+ {
+ 	for (int i=0;i<tuTiengAnh.size();i++)
+ 	{   int hashVal=0;
+ 		hashVal += tuTiengAnh[i];
+ 		return hashVal % tableSize;
+	 }
+ }
+};
+int main()
+    { TuDien td(11);
+    MucTu mt1("computer","may tinh");
+    MucTu mt2("memory","bo nho");
+    MucTu mt3("hard drive","o cung");
+    td.chenMucTu(mt1);
+    td.chenMucTu(mt2);
+    td.chenMucTu(mt3);
+    
+    string tuTA, nghiaTV;
+    cout<<" nhap vao tu tieng anh: ";
+    getline(cin,tuTA);
+    nghiaTV = td.nghiaTiengViet(tuTA);
+    if ( nghiaTV !="")
+     cout<<" nghia tieng viet :"<<nghiaTV ;
+     else
+      cout<<" khong ton tai tu tiang anh vua nhap!";
+      return 0;   
+	}
