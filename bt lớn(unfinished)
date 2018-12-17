@@ -1,0 +1,127 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+struct TTsach
+{
+	
+	string tenSach;
+	int maSach;
+	string tenNXB;
+
+	TTsach(string ten= " ",string nxb = " ")
+	{
+		tenSach = ten;
+		tenNXB = nxb;
+	}
+	int getMaSach()
+	{
+		return maSach;
+	}
+	
+	void nhapttSach()
+	{
+		cout << "Ten sach: ";cin >> tenSach;
+		cout << "Ma sach: ";cin >> maSach;
+		cout << "NXB: ";cin >> tenNXB;
+	}
+	void xuatttSach()
+	{
+		cout << "========================================================" << endl;
+		cout << "                      Thong tin sach                    " << endl;
+		cout << "Ten sach: " << tenSach << endl;
+		cout << "Ma sach: " << maSach << endl;
+		cout << "NXB: " << tenNXB << endl;
+	}
+};
+
+class ThuVien
+{
+public:
+	ThuVien(int size = 101)
+	{
+		table = new TTsach[size];
+		trong = new bool[size];
+		tableSize = size;
+		for (int i = 0;i < size;i++)
+			trong[size] == true;
+	}
+	~ThuVien()
+	{
+		delete[]table;
+		delete[]trong;
+	}
+	void chenSach(TTsach tt)
+	{
+		int index = hash(tt.tenSach);
+		while (!trong[index])
+		{
+			index++;
+			index = index % tableSize;
+		}
+		table[index] = tt;
+		trong[index] = false;
+	}
+private:
+	TTsach * table;
+	int tableSize;
+	bool * trong ;
+	int hash(string tenSach)
+	{
+		int hashVal = 0;
+		for (int i = 0;i<tenSach.size();i++)
+		{
+			hashVal++;
+			hashVal += tenSach[i];
+			return hashVal % tableSize;
+		}
+	}
+};
+
+void menu()
+{
+	TTsach sach1;
+	int luachon ;
+	cout << "=====================================" << endl;
+	cout << "                 MENU             " << endl;
+	cout << "=====================================" << endl;
+	cout << "1.Hien thi thong tin sach dang co." << endl;
+	cout << "2.Nhap thong tin sach moi" << endl;
+	cout << "3.Xoa thong tin sach" << endl;
+	cout << "4.Chinh sua thong tin sach" << endl;
+	cout << "5.Thoat" << endl;
+
+	do
+	{
+	cout << "Nhap lua chon: ";cin >> luachon;
+		switch (luachon)
+		{
+		case 1:
+			sach1.xuatttSach();
+			break;
+		case 2:
+			sach1.nhapttSach();
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		default:
+			break;
+		}
+	} while (luachon != 5);
+	
+}
+
+int main()
+{/*
+	TTsach sach1;
+	sach1.nhapttSach();
+	sach1.xuatttSach();
+*/
+	menu();
+	system("pause");
+	return 0;
+	
+}
