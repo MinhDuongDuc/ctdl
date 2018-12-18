@@ -81,13 +81,15 @@ private:
 
 void menu()
 {
-	TTsach sach1;
-	int luachon ;
+	ThuVien tv(101);
+	int const a = 100;
+	TTsach sach[a];
+	int luachon ,dem = 0;
 	cout << "=====================================" << endl;
 	cout << "                 MENU             " << endl;
 	cout << "=====================================" << endl;
-	cout << "1.Hien thi thong tin sach dang co." << endl;
-	cout << "2.Nhap thong tin sach moi" << endl;
+	cout << "1.Nhap thong tin sach moi" << endl;
+	cout << "2.Hien thi thong tin sach dang co." << endl;
 	cout << "3.Xoa thong tin sach" << endl;
 	cout << "4.Chinh sua thong tin sach" << endl;
 	cout << "5.Thoat" << endl;
@@ -98,29 +100,33 @@ void menu()
 		switch (luachon)
 		{
 		case 1:
-			sach1.xuatttSach();
+			sach[dem].nhapttSach();
+			tv.chenSach(sach[dem]);
+			dem++;
 			break;
 		case 2:
-			sach1.nhapttSach();
+			for (int i = 0;i < dem;i++)
+			{
+				sach[i].xuatttSach();
+			}
 			break;
 		case 3:
+
 			break;
 		case 4:
 			break;
 		default:
 			break;
 		}
-	} while (luachon != 5);
-	
+	}
+	while (luachon != 5);
 }
 
 int main()
-{/*
-	TTsach sach1;
-	sach1.nhapttSach();
-	sach1.xuatttSach();
-*/
+{
+
 	menu();
+
 	system("pause");
 	return 0;
 	
