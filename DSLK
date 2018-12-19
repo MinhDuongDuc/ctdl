@@ -1,0 +1,145 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+//  Khai bao danh sach lien ket
+template <typename T>
+class SingleList
+{
+	public:
+		SingleList()			// Ham tao
+		{
+			size = 0;
+			head = NULL;
+		}
+		
+		~SingleList()			// Ham huy
+		{
+			while (!empty())
+				{
+					popFront();	
+				}
+		}
+		
+		bool empty()			// Kiem tra danh sach rong hay khong
+		{
+			return (head == NULL);
+		}
+		
+		int getSize()			// Tra ve kich thuoc phan tu
+		{
+			return size;
+		}
+		
+		T front()				// Tra ve phan tu dau tien
+		{
+			return (head -> elem);
+		}
+		
+		void print()			// In ra cac phan tu tren cung mot dong, cach nhau boi dau cach
+		{
+			Node * p = head;
+			while (p != NULL)
+			{
+				cout << p -> elem << " ";
+				p = p -> next;
+			}
+			cout << endl;
+		}
+		void pushFront(T x)		// Tren phan tu moi vao dau danh sach
+		{
+			Node * v = new Node(x, head);
+			head = v;
+			size ++;
+		}
+		
+		void popFront() 		// Xoa phan tu dau danh sach
+		{
+			Node * old = head;	// Giu lai nut dau
+			head = head -> next;	//con tro tro den vi tri phan tu tiep theo
+			delete old;			// Xoa nut ban dau
+			size --;
+		}
+		
+		bool contains(T x)		// Kiem tra danh sach co x hay chua
+		{
+			Node * p = head;
+			while (p != NULL)
+			{
+				if (p -> elem ==x)
+					return true;		// Tim thay thi ket thuc
+				p = p -> next; 			// Chua thay thi chuyen sang nut tiep theo	
+			}
+			return false;				// Ko tim dc x
+		}
+		
+		// Xoa x khoi danh sach( neu co)
+		// Neu x xuat hien nhieu lan thi chi xoa phan tu dau tien
+		void remove(T x)
+		{
+			Node * p0 = NULL; 			// p0 la nut trc nut dang xet
+			Node * p = head;			// p la nut dang xet
+			
+			while (p != NULL)
+			{
+				
+				if (p -> elem == x)		// Tim thay thi xoa
+				{
+					if (p0 != NULL)		// x la nut thu hai tro di
+					{
+						p0 -> next = p -> next;		// Nut trc x tro toi nut sau x
+						delete p;				// Xoa nut x
+						size --;
+					}
+					
+					else popFront();		// x la nut dau tien
+					break;				// Thoat khoi vong lap sau khi xoa
+				}
+				
+				else
+				{
+					p0 = p;		// Giu vi tri hien tai
+					p = p -> next;		// cChuyen sang vi tri tiep
+				}
+			}
+		}
+		
+	private:
+		struct Node				// Kieu du lieu cua cac nut trong danh sach
+		{
+			T elem;				// Phan tu
+			Node* next;			// Con tro den nut ke tiep
+			
+			Node(T e, Node * n )
+			{
+				elem = e;
+				next = n;
+			}
+		};
+		
+		Node * head;			// Con tro toi nut dau danh sach
+		int size; 				// Kich thuoc danh sach
+};
+
+// Than chuong trinh chinh
+int main()
+{
+	SingleList<int> ds;
+	ds.pushFront(6);		//	6
+	ds.pushFront(2);		//	2 6
+	ds.pushFront(8);		//  8 2 6
+	ds.pushFront(3);		//	3 8 2 6
+	ds.print();				// 3 8 2 6
+	
+	if (ds.contains(2))
+		cout << "Co 2 trong danh sach"<< endl;
+	if (!ds.contains(7))
+		cout << "Khong co 7 trong danh sach"<< endl;
+	
+	ds.remove(2);		// 3 8 6
+	ds.remove(3);		// 8 6
+	ds.print();		// 8 6
+	
+	cout << "Kich thuoc danh sach la: "<< ds.getSize()<< endl;	
+	return 0;
+} 
